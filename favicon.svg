@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Degradat de fons (Verda Natura -> Blau Ocean -> Violeta Tech) -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="50%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#7c3aed" />
+    </linearGradient>
+
+    <!-- Degradat del líquid intern -->
+    <linearGradient id="liquidGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6ee7b7" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+
+    <!-- Ombra suau -->
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Targeta de fons arrodonida -->
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#bgGrad)" />
+
+  <!-- Icona central (Matràs Químic de la Vida) -->
+  <g filter="url(#shadow)">
+    <!-- Vidre del matràs -->
+    <path d="M216 130 V 175 L 135 325 C 118 355 139 392 174 392 H 338 C 373 392 394 355 377 325 L 296 175 V 130 H 312 C 323 130 332 121 332 110 C 332 99 323 90 312 90 H 200 C 189 90 180 99 180 110 C 180 121 189 130 200 130 Z" fill="#FFFFFF" fill-opacity="0.25" stroke="#FFFFFF" stroke-width="22" stroke-linejoin="round" stroke-linecap="round" />
+
+    <!-- Líquid interior -->
+    <path d="M 162 335 L 210 245 Q 256 265 302 245 L 350 335 C 360 352 347 372 327 372 H 185 C 165 372 152 352 162 335 Z" fill="url(#liquidGrad)" />
+
+    <!-- Bombolles d'oxigen / reacció -->
+    <circle cx="230" cy="215" r="14" fill="#FFFFFF" opacity="0.85" />
+    <circle cx="275" cy="175" r="10" fill="#FFFFFF" opacity="0.9" />
+    <circle cx="245" cy="142" r="8" opacity="0.95" fill="#FFFFFF" />
+
+    <!-- Simbolisme de la vida (Fulla) -->
+    <path d="M 256 295 C 256 260 290 250 300 250 C 300 285 266 295 256 295 Z" fill="#a7f3d0" />
+  </g>
+</svg>
