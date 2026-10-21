@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="ca" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Els Elements de la Vida Quotidiana - Física i Química 3r ESO</title>
+  
+  <!-- Tailwind CSS per a disseny adaptatiu i basat en REM -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Lexend per a màxima llegibilitat pedagògica -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* Tipografia base accessible */
+    * {
+      font-family: 'Lexend', sans-serif;
+    }
+
+    /* Transitions per a canvis de tema i mida de text */
+    html {
+      transition: font-size 0.2s ease;
+    }
+
+    /* ESTILS DE MODE ALT CONTRAST (#000000, #FFFFFF, #FFFF00) */
+    body.high-contrast {
+      background-color: #000000 !important;
+      color: #FFFFFF !important;
+    }
+
+    body.high-contrast .hc-card {
+      background-color: #121212 !important;
+      border: 3px solid #FFFF00 !important;
+      color: #FFFFFF !important;
+      box-shadow: none !important;
+    }
+
+    body.high-contrast .hc-text-main {
+      color: #FFFFFF !important;
+    }
+
+    body.high-contrast .hc-text-sub {
+      color: #E0E0E0 !important;
+    }
+
+    body.high-contrast .hc-accent {
+      color: #FFFF00 !important;
+    }
+
+    body.high-contrast .hc-badge {
+      background-color: #FFFF00 !important;
+      color: #000000 !important;
+      font-weight: 800 !important;
+      border: 1px solid #FFFFFF !important;
+    }
+
+    body.high-contrast .hc-btn {
+      background-color: #000000 !important;
+      color: #FFFF00 !important;
+      border: 2px solid #FFFF00 !important;
+    }
+
+    body.high-contrast .hc-btn:hover,
+    body.high-contrast .hc-btn-active {
+      background-color: #FFFF00 !important;
+      color: #000000 !important;
+      font-weight: 800 !important;
+    }
+
+    body.high-contrast header,
+    body.high-contrast nav {
+      background-color: #1a1a1a !important;
+      border-bottom: 3px solid #FFFF00 !important;
+    }
+
+    /* EFECTE GIR 3D PER AL JOC DE MEMÒRIA */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+
+    /* ANIMACIÓ D'ERROR / SACSEJADA */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .animate-shake {
+      animation: shake 0.35s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-full flex flex-col transition-colors duration-200">
+
+  <!-- Canvas per a l'efecte visual de celebració (confetti sense so) -->
+  <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-50 w-full h-full hidden"></canvas>
+
+  <!-- CAPÇALERA AMB EINES D'ACCESSIBILITAT DUA -->
+  <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-30 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Títol de la Unitat Didàctica -->
+      <div class="flex items-center space-x-3">
+        <span class="text-3xl" aria-hidden="true">🧪</span>
+        <div>
+          <h1 class="text-lg sm:text-xl font-extrabold tracking-tight hc-accent">Els Elements de la Vida Quotidiana</h1>
+          <p class="text-xs sm:text-sm text-indigo-200 hc-text-sub">Física i Química — 3r ESO (Adaptació Curricular)</p>
+        </div>
+      </div>
+
+      <!-- Controls DUA: Mida de Font + Alt Contrast -->
+      <div class="flex items-center gap-2 bg-indigo-950/80 p-1.5 rounded-2xl border border-indigo-700/60">
+        
+        <!-- Control Directe de Mida de Text (Reescalat HTML REM) -->
+        <div class="flex items-center bg-indigo-900/90 rounded-xl p-1 border border-indigo-700" role="group" aria-label="Mida de la font">
+          <span class="text-xs font-semibold text-indigo-200 px-2 hidden sm:inline">Text:</span>
+          <button onclick="setFontSize('normal')" id="btn-font-normal" class="hc-btn px-2.5 py-1 text-xs font-extrabold rounded-lg bg-indigo-600 text-white shadow transition" title="Mida Normal (100%)">
+            A
+          </button>
+          <button onclick="setFontSize('large')" id="btn-font-large" class="hc-btn px-2.5 py-1 text-xs font-extrabold rounded-lg bg-white/10 text-indigo-200 hover:bg-indigo-700 transition" title="Mida Gran (118%)">
+            A+
+          </button>
+          <button onclick="setFontSize('xlarge')" id="btn-font-xlarge" class="hc-btn px-2.5 py-1 text-xs font-extrabold rounded-lg bg-white/10 text-indigo-200 hover:bg-indigo-700 transition" title="Mida Molt Gran (135%)">
+            A++
+          </button>
+        </div>
+
+        <!-- Botó Mode Alt Contrast -->
+        <button onclick="toggleHighContrast()" id="btn-hc" class="hc-btn flex items-center gap-1.5 px-3 py-1.5 text-xs font-extrabold bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl transition shadow">
+          <span>🌓</span>
+          <span id="btn-hc-text">Alt Contrast</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- PESTANYES DE NAVEGACIÓ D'APRENENTATGE -->
+    <nav class="bg-indigo-950/90 px-4 border-t border-indigo-800/80" aria-label="Modalitats d'aprenentatge">
+      <div class="max-w-7xl mx-auto flex space-x-2 overflow-x-auto py-2 scrollbar-none">
+        <button onclick="switchTab('explorer')" id="tab-explorer" class="nav-tab hc-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition bg-indigo-600 text-white shadow">
+          <span>🔍</span> Explorador
+        </button>
+        <button onclick="switchTab('quiz')" id="tab-quiz" class="nav-tab hc-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition text-indigo-200 hover:bg-indigo-900">
+          <span>❓</span> Qüestionari Adaptat
+        </button>
+        <button onclick="switchTab('memory')" id="tab-memory" class="nav-tab hc-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition text-indigo-200 hover:bg-indigo-900">
+          <span>🧠</span> Joc de Memòria
+        </button>
+        <button onclick="switchTab('match')" id="tab-match" class="nav-tab hc-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition text-indigo-200 hover:bg-indigo-900">
+          <span>🔗</span> Relacionar
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- CONTINGUT PRINCIPAL DE LES PESTANYES -->
+  <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6">
+
+    <!-- 1. EXPLORADOR D'ELEMENTS -->
+    <section id="sec-explorer" class="space-y-6">
+      
+      <!-- Cerca i Filtre de Categories -->
+      <div class="hc-card bg-white p-4 sm:p-5 rounded-3xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row gap-4 items-center justify-between">
+        
+        <!-- Input de Cerca -->
+        <div class="relative w-full md:w-80">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">🔍</span>
+          <input type="text" id="searchInput" oninput="renderExplorer()" placeholder="Cerca element, símbol o ús..." 
+            class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+
+        <!-- Botons de Categories -->
+        <div class="flex items-center gap-2 flex-wrap w-full md:w-auto justify-start md:justify-end">
+          <button onclick="setCategoryFilter('all')" id="catBtn-all" class="cat-filter-btn hc-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow">
+            Tots (20)
+          </button>
+          <button onclick="setCategoryFilter('nature')" id="catBtn-nature" class="cat-filter-btn hc-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition bg-emerald-100 text-emerald-800 hover:bg-emerald-200">
+            🌱 Vida i Natura (6)
+          </button>
+          <button onclick="setCategoryFilter('health')" id="catBtn-health" class="cat-filter-btn hc-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition bg-amber-100 text-amber-800 hover:bg-amber-200">
+            🥛 Minerals i Salut (7)
+          </button>
+          <button onclick="setCategoryFilter('tech')" id="catBtn-tech" class="cat-filter-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition bg-indigo-100 text-indigo-800 hover:bg-indigo-200">
+            ⚡ Metalls i Tecnologia (7)
+          </button>
+        </div>
+      </div>
+
+      <!-- Graella de Targetes d'Elements -->
+      <div id="elementsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <!-- Generat dinàmicament per JS -->
+      </div>
+    </section>
+
+    <!-- 2. QÜESTIONARI ADAPTAT -->
+    <section id="sec-quiz" class="hidden max-w-2xl mx-auto space-y-6">
+      <div class="hc-card bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+        
+        <!-- Capçalera del Qüestionari -->
+        <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+          <div>
+            <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 hc-text-main">Qüestionari Adaptat</h2>
+            <p class="text-xs text-slate-500 hc-text-sub">Respon 5 preguntes sobre els elements</p>
+          </div>
+          <span id="quizProgressText" class="hc-badge px-3.5 py-1 bg-indigo-100 text-indigo-800 font-extrabold text-xs rounded-full">
+            Pregunta 1 / 5
+          </span>
+        </div>
+
+        <!-- Barra de Progrés -->
+        <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+          <div id="quizProgressBar" class="bg-indigo-600 h-full w-1/5 transition-all duration-300"></div>
+        </div>
+
+        <!-- Caixeta de Pregunta Activa -->
+        <div id="quizQuestionBox" class="space-y-5">
+          <div class="p-4 sm:p-5 bg-slate-50 rounded-2xl border border-slate-200 flex items-start gap-3">
+            <span class="text-3xl" aria-hidden="true">❓</span>
+            <p id="quizQuestionText" class="text-sm sm:text-base font-bold text-slate-800 leading-snug hc-text-main">
+              Carregant pregunta...
+            </p>
+          </div>
+
+          <!-- Opcions de Resposta -->
+          <div id="quizOptions" class="grid grid-cols-1 gap-3">
+            <!-- Botons d'opcions generats dinàmicament per JS -->
+          </div>
+
+          <!-- Retroacció Immediata -->
+          <div id="quizFeedback" class="hidden p-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-between"></div>
+
+          <!-- Botó Següent Pregunta -->
+          <button id="quizNextBtn" onclick="nextQuestion()" class="hidden hc-btn w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-2xl shadow transition">
+            Següent Pregunta ➔
+          </button>
+        </div>
+
+        <!-- Pantalla Final del Qüestionari -->
+        <div id="quizResultBox" class="hidden text-center space-y-6 py-6">
+          <div class="text-6xl" id="quizResultEmoji">🎉</div>
+          <div class="space-y-2">
+            <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 hc-text-main">Molt bé! Has completat el qüestionari!</h3>
+            <p class="text-sm sm:text-base text-slate-600 hc-text-sub">Has encertat <span id="quizFinalScore" class="font-extrabold text-indigo-600 text-lg hc-accent">0</span> de 5 preguntes.</p>
+          </div>
+          <button onclick="initQuiz()" class="hc-btn px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-2xl shadow transition">
+            Tornar a jugar 🔄
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. JOC DE MEMÒRIA (4 Parelles / 8 Cartes) -->
+    <section id="sec-memory" class="hidden max-w-4xl mx-auto space-y-6">
+      <div class="hc-card bg-white p-5 sm:p-7 rounded-3xl shadow-sm border border-slate-200 space-y-5">
+        
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-slate-100 pb-4">
+          <div>
+            <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 hc-text-main">Joc de Memòria Adaptat</h2>
+            <p class="text-xs text-slate-500 hc-text-sub">Troba les 4 parelles relacionant el símbol amb la seva descripció!</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-bold bg-slate-100 text-slate-700 px-3.5 py-1.5 rounded-xl border border-slate-200 hc-card">
+              Intents: <span id="memoryMoves" class="text-indigo-600 font-extrabold hc-accent">0</span>
+            </span>
+            <button onclick="initMemoryGame()" class="hc-btn px-4 py-2 bg-indigo-600 text-white text-xs font-extrabold rounded-xl hover:bg-indigo-700 transition">
+              Nova Partida 🔄
+            </button>
+          </div>
+        </div>
+
+        <!-- Taulell del Joc de Memòria -->
+        <div id="memoryBoard" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 perspective-1000 min-h-[280px]">
+          <!-- Generat per JS -->
+        </div>
+
+        <!-- Missatge de Victòria Memòria -->
+        <div id="memoryWinBox" class="hidden p-6 bg-emerald-50 rounded-2xl text-center border-2 border-emerald-300 space-y-3 hc-card">
+          <div class="text-4xl">🌟</div>
+          <h3 class="text-lg sm:text-xl font-extrabold text-emerald-900 hc-text-main">Excel·lent treball! Has trobat totes les parelles!</h3>
+          <p class="text-xs sm:text-sm text-emerald-700 hc-text-sub">Has completat la partida en <span id="memoryFinalMoves" class="font-bold">0</span> intents.</p>
+          <button onclick="initMemoryGame()" class="hc-btn px-6 py-2.5 bg-emerald-600 text-white font-extrabold rounded-xl text-xs sm:text-sm hover:bg-emerald-700 transition">
+            Jugar de nou 🔄
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. RELACIONAR -->
+    <section id="sec-match" class="hidden max-w-4xl mx-auto space-y-6">
+      <div class="hc-card bg-white p-5 sm:p-7 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+        
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-slate-100 pb-4">
+          <div>
+            <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 hc-text-main">Relaciona Símbol i Ús</h2>
+            <p class="text-xs text-slate-500 hc-text-sub">Fes clic a un símbol de l'esquerra i després a la seva descripció correcta de la dreta.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-bold bg-indigo-50 text-indigo-700 px-3.5 py-1.5 rounded-xl border border-indigo-100 hc-card">
+              Completats: <span id="matchScore" class="font-extrabold text-indigo-800 hc-accent">0</span> / 4
+            </span>
+            <button onclick="initMatchGame()" class="hc-btn px-4 py-2 bg-indigo-600 text-white text-xs font-extrabold rounded-xl hover:bg-indigo-700 transition">
+              Nou Exercici 🔄
+            </button>
+          </div>
+        </div>
+
+        <!-- Graella de Dues Columnes -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Columna Esquerra: Símbols -->
+          <div class="space-y-3">
+            <h3 class="text-xs font-extrabold text-slate-400 uppercase tracking-wider text-center">Símbols Química</h3>
+            <div id="matchLeftCol" class="space-y-3"></div>
+          </div>
+
+          <!-- Columna Dreta: Descripcions -->
+          <div class="space-y-3">
+            <h3 class="text-xs font-extrabold text-slate-400 uppercase tracking-wider text-center">Nom i Ús Quotidià</h3>
+            <div id="matchRightCol" class="space-y-3"></div>
+          </div>
+        </div>
+
+        <!-- Missatge de Victòria Relacionar -->
+        <div id="matchWinBox" class="hidden p-6 bg-emerald-50 rounded-2xl text-center border-2 border-emerald-300 space-y-3 hc-card">
+          <div class="text-4xl">🏆</div>
+          <h3 class="text-lg sm:text-xl font-extrabold text-emerald-900 hc-text-main">Molt bé! Parelles completes!</h3>
+          <p class="text-xs sm:text-sm text-emerald-700 hc-text-sub">Has relacionat correctament tots els elements d'aquesta ronda.</p>
+          <button onclick="initMatchGame()" class="hc-btn px-6 py-2.5 bg-emerald-600 text-white font-extrabold rounded-xl text-xs sm:text-sm hover:bg-emerald-700 transition">
+            Següent ronda 🔄
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL POPUP PER ALS DETALLS D'ELEMENT ("AMPLIA") -->
+  <div id="elementModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="hc-card bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-200 transform transition-all">
+      
+      <!-- Capçalera del Modal -->
+      <div id="modalHeader" class="p-6 bg-indigo-600 text-white flex justify-between items-start relative">
+        <div class="flex items-center space-x-4">
+          <div id="modalSymbolBadge" class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-2xl font-black border border-white/30 shadow-inner">
+            H
+          </div>
+          <div>
+            <span id="modalCategoryBadge" class="inline-block px-2.5 py-0.5 rounded-full text-xs font-extrabold uppercase bg-white/20 text-white tracking-wider mb-1">
+              Vida i Natura
+            </span>
+            <h3 id="modalName" class="text-2xl font-extrabold tracking-tight">Hidrogen</h3>
+          </div>
+        </div>
+        <button onclick="closeModal()" class="text-white/80 hover:text-white bg-black/10 hover:bg-black/20 rounded-full w-8 h-8 flex items-center justify-center text-base font-bold transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Cos del Modal -->
+      <div class="p-6 space-y-4">
+        <div class="flex items-center space-x-3 text-4xl p-3.5 bg-slate-50 rounded-2xl border border-slate-100 hc-card">
+          <span id="modalIcon">💧</span>
+          <div class="text-xs text-slate-500 font-medium hc-text-sub">
+            Element químic fonamental present a la nostra vida quotidiana.
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Presència i ús en la vida diària:</h4>
+          <p id="modalText" class="text-sm sm:text-base text-slate-700 leading-relaxed font-semibold bg-slate-50 p-4 rounded-2xl border border-slate-100 hc-card hc-text-main">
+            Descripció de l'element...
+          </p>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="closeModal()" class="hc-btn w-full py-3 bg-slate-800 hover:bg-slate-900 text-white font-extrabold rounded-xl shadow text-xs sm:text-sm transition">
+            D'acord, entès!
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCRIPT LÒGICA I DADES (JAVASCRIPT PUR, SENSE AUDIO) -->
+  <script>
+    /* ==========================================================================
+       DADES EXACTES DELS 20 ELEMENTS (3 CATEGORIES)
+       ========================================================================== */
+    const ELEMENTS = [
+      // 1. Vida i Natura (6 elements)
+      { id: 'H', symbol: 'H', name: 'Hidrogen', icon: '💧', category: 'nature', catName: 'Vida i Natura', text: "Present a l'aigua (H₂O)." },
+      { id: 'O', symbol: 'O', name: 'Oxigen', icon: '🫁', category: 'nature', catName: 'Vida i Natura', text: "Imprescindible per a la respiració dels éssers vius." },
+      { id: 'C', symbol: 'C', name: 'Carboni', icon: '🌱', category: 'nature', catName: 'Vida i Natura', text: "Element base de la matèria viva." },
+      { id: 'N', symbol: 'N', name: 'Nitrogen', icon: '💨', category: 'nature', catName: 'Vida i Natura', text: "Gas principal de l'aire que respirem." },
+      { id: 'P', symbol: 'P', name: 'Fòsfor', icon: '🐟', category: 'nature', catName: 'Vida i Natura', text: "Fonamental per als ossos i present al peix, també s'empra per fabricar mistos." },
+      { id: 'S', symbol: 'S', name: 'Sofre', icon: '🌋', category: 'nature', catName: 'Vida i Natura', text: "Mineral de color groc característic de les zones volcàniques i aigües termals." },
+
+      // 2. Minerals i Salut (7 elements)
+      { id: 'Ca', symbol: 'Ca', name: 'Calci', icon: '🥛', category: 'health', catName: 'Minerals i Salut', text: "Fonamental per als ossos i les dents (present a la llet)." },
+      { id: 'Fe', symbol: 'Fe', name: 'Ferro', icon: '🩸', category: 'health', catName: 'Minerals i Salut', text: "Transporta l'oxigen a la sang (evita l'anèmia)." },
+      { id: 'Na', symbol: 'Na', name: 'Sodi', icon: '🧂', category: 'health', catName: 'Minerals i Salut', text: "Component de la sal de cuina (NaCl)." },
+      { id: 'K', symbol: 'K', name: 'Potassi', icon: '🍌', category: 'health', catName: 'Minerals i Salut', text: "Important per als músculs (present als plàtans)." },
+      { id: 'Cl', symbol: 'Cl', name: 'Clor', icon: '🏊', category: 'health', catName: 'Minerals i Salut', text: "Component de la sal de cuina i de l'aigua de la piscina." },
+      { id: 'F', symbol: 'F', name: 'Fluor', icon: '🪥', category: 'health', catName: 'Minerals i Salut', text: "Ingredient de la pasta de dents, protegeix les dents contra les càries." },
+      { id: 'Mg', symbol: 'Mg', name: 'Magnesi', icon: '🥑', category: 'health', catName: 'Minerals i Salut', text: "Essencial per al bon funcionament dels músculs i ossos (present en fruita seca, espinacs i alvocats)." },
+
+      // 3. Metalls i Tecnologia (7 elements)
+      { id: 'Au', symbol: 'Au', name: 'Or', icon: '👑', category: 'tech', catName: 'Metalls i Tecnologia', text: "Metall molt valuós utilitzat en joieria." },
+      { id: 'Ag', symbol: 'Ag', name: 'Plata', icon: '🥈', category: 'tech', catName: 'Metalls i Tecnologia', text: "Metall utilitzat en joieria i monedes." },
+      { id: 'Cu', symbol: 'Cu', name: 'Coure', icon: '🔌', category: 'tech', catName: 'Metalls i Tecnologia', text: "Utilitzat en els cables elèctrics." },
+      { id: 'Al', symbol: 'Al', name: 'Alumini', icon: '🥫', category: 'tech', catName: 'Metalls i Tecnologia', text: "Utilitzat per al paper d'embolicat i llaunes." },
+      { id: 'Li', symbol: 'Li', name: 'Liti', icon: '🔋', category: 'tech', catName: 'Metalls i Tecnologia', text: "Utilitzat per a fabricar les bateries de mòbils, tauletes i cotxes elèctrics." },
+      { id: 'Si', symbol: 'Si', name: 'Silici', icon: '💻', category: 'tech', catName: 'Metalls i Tecnologia', text: "Component de la sorra de la platja utilitzat per fer microxips d'ordinadors i mòbils." },
+      { id: 'Pb', symbol: 'Pb', name: 'Plom', icon: '🛡️', category: 'tech', catName: 'Metalls i Tecnologia', text: "Metall molt pesant utilitzat com a escut de protecció contra la radiació (raigs X)." }
+    ];
+
+    /* ==========================================================================
+       ESTATS DE L'APLICACIÓ
+       ========================================================================== */
+    let currentCategory = 'all';
+    let isHighContrast = false;
+
+    // Estat Qüestionari
+    let quizQuestions = [];
+    let currentQuizIndex = 0;
+    let quizScore = 0;
+    let quizAnswered = false;
+
+    // Estat Memòria
+    let memoryCards = [];
+    let flippedCards = [];
+    let matchedPairsCount = 0;
+    let memoryMoves = 0;
+    let isMemoryProcessing = false;
+
+    // Estat Relacionar
+    let matchSelectedLeft = null;
+    let matchSelectedRight = null;
+    let matchedCount = 0;
+
+    /* ==========================================================================
+       1. REQUISIT TÈCNIC: SOLUCIÓ AL CONTROL DE MIDA DE TEXT (A / A+ / A++)
+       Modificació directa del font-size de document.documentElement.style.fontSize
+       perquè Tailwind (que utilitza rem) escani i redimensioni TOTS els elements.
+       ========================================================================== */
+    function setFontSize(size) {
+      const root = document.documentElement;
+      
+      if (size === 'normal') {
+        root.style.fontSize = '100%'; // Base 16px
+      } else if (size === 'large') {
+        root.style.fontSize = '118%'; // ~19px
+      } else if (size === 'xlarge') {
+        root.style.fontSize = '135%'; // ~21.5px
+      }
+
+      // Actualitzar visualment el botó actiu
+      ['normal', 'large', 'xlarge'].forEach(s => {
+        const btn = document.getElementById(`btn-font-${s}`);
+        if (btn) {
+          if (s === size) {
+            btn.className = "hc-btn px-2.5 py-1 text-xs font-extrabold rounded-lg bg-indigo-600 text-white shadow transition";
+          } else {
+            btn.className = "hc-btn px-2.5 py-1 text-xs font-extrabold rounded-lg bg-white/10 text-indigo-200 hover:bg-indigo-700 transition";
+          }
+        }
+      });
+    }
+
+    /* ==========================================================================
+       2. REQUISIT TÈCNIC: MODE ALT CONTRAST
+       ========================================================================== */
+    function toggleHighContrast() {
+      isHighContrast = !isHighContrast;
+      document.body.classList.toggle('high-contrast', isHighContrast);
+      
+      const btnText = document.getElementById('btn-hc-text');
+      if (btnText) {
+        btnText.innerText = isHighContrast ? "Contrast Normal" : "Alt Contrast";
+      }
+    }
+
+    /* ==========================================================================
+       INICIALITZACIÓ
+       ========================================================================== */
+    window.onload = function() {
+      renderExplorer();
+      initQuiz();
+      initMemoryGame();
+      initMatchGame();
+
+      // Tecla Escape per tancar modal
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+      });
+    };
+
+    /* ==========================================================================
+       NAVEGACIÓ ENTRE PESTANYES
+       ========================================================================== */
+    function switchTab(tabId) {
+      const tabs = ['explorer', 'quiz', 'memory', 'match'];
+      tabs.forEach(t => {
+        const sec = document.getElementById(`sec-${t}`);
+        const btn = document.getElementById(`tab-${t}`);
+        if (t === tabId) {
+          sec.classList.remove('hidden');
+          btn.className = "nav-tab hc-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition bg-indigo-600 text-white shadow";
+        } else {
+          sec.classList.add('hidden');
+          btn.className = "nav-tab hc-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition text-indigo-200 hover:bg-indigo-900";
+        }
+      });
+    }
+
+    /* ==========================================================================
+       PESTANYA 1: EXPLORADOR D'ELEMENTS
+       ========================================================================== */
+    function setCategoryFilter(cat) {
+      currentCategory = cat;
+      const cats = ['all', 'nature', 'health', 'tech'];
+      cats.forEach(c => {
+        const btn = document.getElementById(`catBtn-${c}`);
+        if (c === cat) {
+          btn.className = "cat-filter-btn hc-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow";
+        } else {
+          let bgClass = "bg-slate-100 text-slate-700 hover:bg-slate-200";
+          if (c === 'nature') bgClass = "bg-emerald-100 text-emerald-800 hover:bg-emerald-200";
+          if (c === 'health') bgClass = "bg-amber-100 text-amber-800 hover:bg-amber-200";
+          if (c === 'tech') bgClass = "bg-indigo-100 text-indigo-800 hover:bg-indigo-200";
+          btn.className = `cat-filter-btn hc-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition ${bgClass}`;
+        }
+      });
+      renderExplorer();
+    }
+
+    function renderExplorer() {
+      const grid = document.getElementById('elementsGrid');
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+
+      const filtered = ELEMENTS.filter(el => {
+        const matchesCat = currentCategory === 'all' || el.category === currentCategory;
+        const matchesSearch = el.name.toLowerCase().includes(search) || 
+                              el.symbol.toLowerCase().includes(search) || 
+                              el.text.toLowerCase().includes(search);
+        return matchesCat && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-12 text-center text-slate-400 font-medium hc-text-sub">
+            No s'ha trobat cap element que coincideixi amb la cerca.
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(el => {
+        let badgeColor = "bg-emerald-100 text-emerald-800 border-emerald-200";
+        let symbolColor = "bg-emerald-50 text-emerald-700 border-emerald-200";
+        
+        if (el.category === 'health') {
+          badgeColor = "bg-amber-100 text-amber-800 border-amber-200";
+          symbolColor = "bg-amber-50 text-amber-700 border-amber-200";
+        } else if (el.category === 'tech') {
+          badgeColor = "bg-indigo-100 text-indigo-800 border-indigo-200";
+          symbolColor = "bg-indigo-50 text-indigo-700 border-indigo-200";
+        }
+
+        return `
+          <div class="hc-card bg-white rounded-3xl p-5 shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="hc-badge text-xs font-extrabold px-2.5 py-0.5 rounded-full border ${badgeColor}">
+                  ${el.catName}
+                </span>
+                <span class="text-3xl" aria-hidden="true">${el.icon}</span>
+              </div>
+
+              <div class="flex items-center space-x-3 pt-1">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center font-black text-xl border ${symbolColor} hc-card hc-accent">
+                  ${el.symbol}
+                </div>
+                <div>
+                  <h3 class="font-extrabold text-base text-slate-900 hc-text-main">${el.name}</h3>
+                  <p class="text-xs text-slate-500 font-medium hc-text-sub">Símbol: <span class="font-bold hc-accent">${el.symbol}</span></p>
+                </div>
+              </div>
+
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium hc-text-sub">
+                ${el.text}
+              </p>
+            </div>
+
+            <div class="pt-4 mt-2 border-t border-slate-100">
+              <button onclick="openModal('${el.id}')" class="hc-btn w-full py-2 px-4 bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 font-extrabold text-xs rounded-xl transition flex items-center justify-center gap-1.5">
+                <span>🔍</span> Amplia
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /* ==========================================================================
+       MODAL DE DETALLS ("AMPLIA")
+       ========================================================================== */
+    function openModal(id) {
+      const el = ELEMENTS.find(item => item.id === id);
+      if (!el) return;
+
+      document.getElementById('modalSymbolBadge').innerText = el.symbol;
+      document.getElementById('modalName').innerText = el.name;
+      document.getElementById('modalCategoryBadge').innerText = el.catName;
+      document.getElementById('modalIcon').innerText = el.icon;
+      document.getElementById('modalText').innerText = el.text;
+
+      const modalHeader = document.getElementById('modalHeader');
+      if (el.category === 'nature') {
+        modalHeader.className = "p-6 bg-emerald-600 text-white flex justify-between items-start relative";
+      } else if (el.category === 'health') {
+        modalHeader.className = "p-6 bg-amber-600 text-white flex justify-between items-start relative";
+      } else {
+        modalHeader.className = "p-6 bg-indigo-600 text-white flex justify-between items-start relative";
+      }
+
+      document.getElementById('elementModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('elementModal').classList.add('hidden');
+    }
+
+    /* ==========================================================================
+       PESTANYA 2: QÜESTIONARI ADAPTAT
+       ========================================================================== */
+    function initQuiz() {
+      const shuffled = [...ELEMENTS].sort(() => 0.5 - Math.random());
+      quizQuestions = shuffled.slice(0, 5).map(targetEl => {
+        const others = ELEMENTS.filter(e => e.id !== targetEl.id);
+        const distractors = [...others].sort(() => 0.5 - Math.random()).slice(0, 2);
+        const options = [...distractors, targetEl].sort(() => 0.5 - Math.random());
+
+        return {
+          question: `Quin element te aquesta utilitat: "${targetEl.text}"?`,
+          correctId: targetEl.id,
+          options: options,
+          targetEl: targetEl
+        };
+      });
+
+      currentQuizIndex = 0;
+      quizScore = 0;
+      quizAnswered = false;
+
+      document.getElementById('quizQuestionBox').classList.remove('hidden');
+      document.getElementById('quizResultBox').classList.add('hidden');
+      
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      quizAnswered = false;
+      const q = quizQuestions[currentQuizIndex];
+
+      document.getElementById('quizProgressText').innerText = `Pregunta ${currentQuizIndex + 1} / 5`;
+      document.getElementById('quizProgressBar').style.width = `${((currentQuizIndex + 1) / 5) * 100}%`;
+
+      document.getElementById('quizQuestionText').innerText = q.question;
+      document.getElementById('quizFeedback').className = "hidden p-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-between";
+      document.getElementById('quizNextBtn').classList.add('hidden');
+
+      const optionsContainer = document.getElementById('quizOptions');
+      optionsContainer.innerHTML = q.options.map(opt => `
+        <button onclick="checkQuizAnswer('${opt.id}')" id="quizOpt-${opt.id}" class="hc-card w-full p-4 text-left rounded-2xl border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/50 font-bold transition flex items-center justify-between text-slate-800 bg-white">
+          <div class="flex items-center space-x-3">
+            <span class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center font-black text-indigo-700 border border-slate-200 hc-card hc-accent">
+              ${opt.symbol}
+            </span>
+            <span class="hc-text-main font-extrabold text-sm sm:text-base">${opt.name}</span>
+          </div>
+          <span class="text-2xl" aria-hidden="true">${opt.icon}</span>
+        </button>
+      `).join('');
+    }
+
+    function checkQuizAnswer(selectedId) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+
+      const q = quizQuestions[currentQuizIndex];
+      const isCorrect = selectedId === q.correctId;
+      const feedback = document.getElementById('quizFeedback');
+      const nextBtn = document.getElementById('quizNextBtn');
+
+      q.options.forEach(opt => {
+        const btn = document.getElementById(`quizOpt-${opt.id}`);
+        btn.disabled = true;
+        if (opt.id === q.correctId) {
+          btn.className = "w-full p-4 text-left rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-extrabold flex items-center justify-between hc-card";
+        } else if (opt.id === selectedId) {
+          btn.className = "w-full p-4 text-left rounded-2xl border-2 border-rose-500 bg-rose-50 text-rose-900 font-extrabold flex items-center justify-between hc-card";
+        }
+      });
+
+      if (isCorrect) {
+        quizScore++;
+        feedback.className = "p-4 rounded-2xl font-extrabold text-xs sm:text-sm bg-emerald-100 text-emerald-900 flex items-center gap-3 border border-emerald-300 hc-card";
+        feedback.innerHTML = `<span>✅ Correcte! (${q.targetEl.name} - ${q.targetEl.symbol})</span>`;
+      } else {
+        feedback.className = "p-4 rounded-2xl font-extrabold text-xs sm:text-sm bg-rose-100 text-rose-900 flex items-center gap-3 border border-rose-300 hc-card";
+        feedback.innerHTML = `<span>❌ La resposta correcta era ${q.targetEl.name} (${q.targetEl.symbol}).</span>`;
+      }
+
+      feedback.classList.remove('hidden');
+      nextBtn.classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+      currentQuizIndex++;
+      if (currentQuizIndex < 5) {
+        renderQuizQuestion();
+      } else {
+        showQuizResults();
+      }
+    }
+
+    function showQuizResults() {
+      document.getElementById('quizQuestionBox').classList.add('hidden');
+      const resultBox = document.getElementById('quizResultBox');
+      resultBox.classList.remove('hidden');
+      document.getElementById('quizFinalScore').innerText = quizScore;
+
+      const emoji = document.getElementById('quizResultEmoji');
+      if (quizScore >= 4) {
+        emoji.innerText = "🏆";
+        triggerConfetti();
+      } else if (quizScore >= 3) {
+        emoji.innerText = "👏";
+      } else {
+        emoji.innerText = "💪";
+      }
+    }
+
+    /* ==========================================================================
+       PESTANYA 3: JOC DE MEMÒRIA (4 Parelles = 8 Cartes)
+       ========================================================================== */
+    function initMemoryGame() {
+      matchedPairsCount = 0;
+      memoryMoves = 0;
+      flippedCards = [];
+      isMemoryProcessing = false;
+
+      document.getElementById('memoryMoves').innerText = '0';
+      document.getElementById('memoryWinBox').classList.add('hidden');
+
+      const selected = [...ELEMENTS].sort(() => 0.5 - Math.random()).slice(0, 4);
+
+      let cards = [];
+      selected.forEach(el => {
+        cards.push({
+          uid: Math.random().toString(),
+          elementId: el.id,
+          type: 'symbol',
+          content: `${el.symbol} ${el.icon}`,
+          subtext: el.name
+        });
+        cards.push({
+          uid: Math.random().toString(),
+          elementId: el.id,
+          type: 'text',
+          content: el.name,
+          subtext: el.text
+        });
+      });
+
+      memoryCards = cards.sort(() => 0.5 - Math.random());
+
+      const board = document.getElementById('memoryBoard');
+      board.innerHTML = memoryCards.map((card, index) => `
+        <div onclick="flipMemoryCard(${index})" id="memCard-${index}" class="perspective-1000 h-36 cursor-pointer select-none">
+          <div id="memInner-${index}" class="relative w-full h-full duration-500 transform-style-3d shadow-sm rounded-2xl">
+            <!-- Cara posterior -->
+            <div class="hc-card absolute inset-0 w-full h-full bg-indigo-700 rounded-2xl border-2 border-indigo-400 flex flex-col items-center justify-center text-white backface-hidden font-extrabold text-2xl">
+              <span>❓</span>
+              <span class="text-xs text-indigo-200 mt-1">Element</span>
+            </div>
+            <!-- Cara anterior -->
+            <div class="hc-card absolute inset-0 w-full h-full bg-white rounded-2xl border-2 border-indigo-500 flex flex-col items-center justify-center p-3 text-center rotate-y-180 backface-hidden">
+              <div class="font-extrabold text-sm sm:text-base text-indigo-900 hc-text-main hc-accent">${card.content}</div>
+              <div class="text-xs text-slate-500 font-medium mt-1 line-clamp-2 hc-text-sub">${card.subtext}</div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function flipMemoryCard(index) {
+      if (isMemoryProcessing) return;
+      const inner = document.getElementById(`memInner-${index}`);
+
+      if (flippedCards.some(c => c.index === index) || inner.classList.contains('matched')) return;
+
+      inner.classList.add('rotate-y-180');
+      flippedCards.push({ index, card: memoryCards[index] });
+
+      if (flippedCards.length === 2) {
+        memoryMoves++;
+        document.getElementById('memoryMoves').innerText = memoryMoves;
+        checkMemoryMatch();
+      }
+    }
+
+    function checkMemoryMatch() {
+      isMemoryProcessing = true;
+      const [c1, c2] = flippedCards;
+
+      if (c1.card.elementId === c2.card.elementId) {
+        document.getElementById(`memInner-${c1.index}`).classList.add('matched');
+        document.getElementById(`memInner-${c2.index}`).classList.add('matched');
+        
+        setTimeout(() => {
+          document.getElementById(`memInner-${c1.index}`).children[1].classList.add('bg-emerald-100', 'border-emerald-500');
+          document.getElementById(`memInner-${c2.index}`).children[1].classList.add('bg-emerald-100', 'border-emerald-500');
+        }, 200);
+
+        matchedPairsCount++;
+        flippedCards = [];
+        isMemoryProcessing = false;
+
+        if (matchedPairsCount === 4) {
+          setTimeout(() => {
+            document.getElementById('memoryWinBox').classList.remove('hidden');
+            document.getElementById('memoryFinalMoves').innerText = memoryMoves;
+            triggerConfetti();
+          }, 500);
+        }
+      } else {
+        setTimeout(() => {
+          document.getElementById(`memInner-${c1.index}`).classList.remove('rotate-y-180');
+          document.getElementById(`memInner-${c2.index}`).classList.remove('rotate-y-180');
+          flippedCards = [];
+          isMemoryProcessing = false;
+        }, 850);
+      }
+    }
+
+    /* ==========================================================================
+       PESTANYA 4: RELACIONAR (4 Parelles Columna Esquerra / Dreta)
+       ========================================================================== */
+    function initMatchGame() {
+      matchedCount = 0;
+      matchSelectedLeft = null;
+      matchSelectedRight = null;
+
+      document.getElementById('matchScore').innerText = '0';
+      document.getElementById('matchWinBox').classList.add('hidden');
+
+      const selected = [...ELEMENTS].sort(() => 0.5 - Math.random()).slice(0, 4);
+
+      const leftList = [...selected].sort(() => 0.5 - Math.random());
+      const rightList = [...selected].sort(() => 0.5 - Math.random());
+
+      const leftCol = document.getElementById('matchLeftCol');
+      leftCol.innerHTML = leftList.map(el => `
+        <button onclick="selectMatchItem('left', '${el.id}')" id="match-left-${el.id}" class="hc-card w-full p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-indigo-400 font-bold transition flex items-center justify-between text-left shadow-xs">
+          <div class="flex items-center space-x-3">
+            <span class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-800 font-extrabold flex items-center justify-center text-base hc-accent">
+              ${el.symbol}
+            </span>
+            <span class="text-slate-800 font-extrabold text-sm sm:text-base hc-text-main">${el.name}</span>
+          </div>
+          <span class="text-2xl" aria-hidden="true">${el.icon}</span>
+        </button>
+      `).join('');
+
+      const rightCol = document.getElementById('matchRightCol');
+      rightCol.innerHTML = rightList.map(el => `
+        <button onclick="selectMatchItem('right', '${el.id}')" id="match-right-${el.id}" class="hc-card w-full p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-indigo-400 font-medium transition text-left text-xs sm:text-sm text-slate-700 shadow-xs leading-relaxed hc-text-sub">
+          ${el.text}
+        </button>
+      `).join('');
+    }
+
+    function selectMatchItem(col, id) {
+      if (col === 'left') {
+        if (matchSelectedLeft) {
+          document.getElementById(`match-left-${matchSelectedLeft}`).classList.remove('border-indigo-600', 'bg-indigo-50', 'ring-2', 'ring-indigo-400');
+        }
+        matchSelectedLeft = id;
+        document.getElementById(`match-left-${id}`).classList.add('border-indigo-600', 'bg-indigo-50', 'ring-2', 'ring-indigo-400');
+      } else {
+        if (matchSelectedRight) {
+          document.getElementById(`match-right-${matchSelectedRight}`).classList.remove('border-indigo-600', 'bg-indigo-50', 'ring-2', 'ring-indigo-400');
+        }
+        matchSelectedRight = id;
+        document.getElementById(`match-right-${id}`).classList.add('border-indigo-600', 'bg-indigo-50', 'ring-2', 'ring-indigo-400');
+      }
+
+      if (matchSelectedLeft && matchSelectedRight) {
+        verifyMatchPair();
+      }
+    }
+
+    function verifyMatchPair() {
+      const leftBtn = document.getElementById(`match-left-${matchSelectedLeft}`);
+      const rightBtn = document.getElementById(`match-right-${matchSelectedRight}`);
+
+      if (matchSelectedLeft === matchSelectedRight) {
+        leftBtn.className = "hc-card w-full p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-extrabold flex items-center justify-between opacity-90 cursor-default";
+        rightBtn.className = "hc-card w-full p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-medium text-xs sm:text-sm leading-relaxed opacity-90 cursor-default";
+
+        leftBtn.disabled = true;
+        rightBtn.disabled = true;
+
+        matchedCount++;
+        document.getElementById('matchScore').innerText = matchedCount;
+
+        matchSelectedLeft = null;
+        matchSelectedRight = null;
+
+        if (matchedCount === 4) {
+          setTimeout(() => {
+            document.getElementById('matchWinBox').classList.remove('hidden');
+            triggerConfetti();
+          }, 350);
+        }
+      } else {
+        leftBtn.classList.add('animate-shake', 'border-rose-500', 'bg-rose-50');
+        rightBtn.classList.add('animate-shake', 'border-rose-500', 'bg-rose-50');
+
+        setTimeout(() => {
+          leftBtn.classList.remove('animate-shake', 'border-rose-500', 'bg-rose-50', 'border-indigo-600', 'ring-2', 'ring-indigo-400');
+          rightBtn.classList.remove('animate-shake', 'border-rose-500', 'bg-rose-50', 'border-indigo-600', 'ring-2', 'ring-indigo-400');
+          
+          matchSelectedLeft = null;
+          matchSelectedRight = null;
+        }, 450);
+      }
+    }
+
+    /* ==========================================================================
+       CELEBRACIÓ SENSE SO (CANVAS CONFETTI)
+       ========================================================================== */
+    function triggerConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.classList.remove('hidden');
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#3b82f6', '#ffff00'];
+
+      for (let i = 0; i < 80; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          size: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speedY: Math.random() * 3 + 2,
+          speedX: Math.random() * 2 - 1,
+          rotation: Math.random() * 360
+        });
+      }
+
+      let timer = 0;
+      let animFrame;
+
+      function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        timer++;
+
+        particles.forEach(p => {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.rotation += 2;
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+          ctx.restore();
+        });
+
+        if (timer < 160) {
+          animFrame = requestAnimationFrame(render);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          canvas.classList.add('hidden');
+          cancelAnimationFrame(animFrame);
+        }
+      }
+
+      render();
+    }
+  </script>
+</body>
+</html>
